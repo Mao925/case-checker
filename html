@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【インフォグラフィック】ビジコン判定AI作成＆利用マニュアル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #0a0a2a;
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #4f46e5, #ec4899, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.2;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2.25rem;
+            }
+        }
+        .step-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+        }
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .step-number {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #ec4899;
+        }
+        .code-block {
+            background: #1e1e3f;
+            color: #a5b4fc;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #4f46e5;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            z-index: 10;
+        }
+        .copy-button:hover {
+            background: #4338ca;
+        }
+        .chat-bubble {
+            padding: 1rem 1.5rem;
+            border-radius: 1.5rem;
+            max-width: 80%;
+            margin-bottom: 1rem;
+        }
+        .user-bubble {
+            background: #4f46e5;
+            color: white;
+            border-bottom-right-radius: 0.25rem;
+            align-self: flex-end;
+        }
+        .ai-bubble {
+            background: #374151;
+            color: white;
+            border-bottom-left-radius: 0.25rem;
+            align-self: flex-start;
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .file-list-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            transition: background-color 0.3s, transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .file-list-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+        .view-button-text {
+            background: #ec4899;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .file-list-item:hover .view-button-text {
+            background: #db2777;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Section -->
+    <header class="container mx-auto px-6 py-20 text-center">
+        <h1 class="text-4xl md:text-6xl font-black leading-tight mb-4">
+            Gemsで作る！あなた専用<br class="hidden md:block">
+            <span class="gradient-text">ビジコン判定AI</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+            コピペとファイルアップロードだけで、ビジネスコンテストのルールを完璧に覚えた最強のAIアシスタントを構築しよう！
+        </p>
+        <div class="mt-12 text-3xl animate-bounce">
+            👇
+        </div>
+    </header>
+
+    <!-- Part 1: Creation -->
+    <section id="creation" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title fade-in-section">
+                <span class="text-gray-400 text-2xl md:text-4xl block font-bold">Part 1</span>
+                AIアシスタントの構築フロー
+            </h2>
+            <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="step-card fade-in-section">
+                    <div class="step-icon">✨</div>
+                    <div class="step-number mb-2">STEP 1</div>
+                    <h3 class="text-2xl font-bold mb-4">Gemsの作成を開始</h3>
+                    <p class="text-gray-300 flex-grow">
+                        Geminiのメニューから「Gems」→「新しいGemsを作成」をクリック。ここから、あなただけのAI開発が始まります。
+                    </p>
+                    <div class="mt-6 flex justify-center">
+                        <svg class="w-24 h-24 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="step-card fade-in-section" style="transition-delay: 200ms;">
+                    <div class="step-icon">🧠</div>
+                    <div class="step-number mb-2">STEP 2</div>
+                    <h3 class="text-2xl font-bold mb-4">知識ベースを構築する</h3>
+                    <p class="text-gray-300 mb-6">
+                        AIの頭脳となる「知識」を与えます。以下の4つの公式ファイルをアップロードして、コンテストのルールを全て記憶させましょう。
+                    </p>
+                    <div id="file-list" class="flex-grow">
+                        <!-- File items will be injected by JS -->
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="step-card fade-in-section" style="transition-delay: 400ms;">
+                    <div class="step-icon">📜</div>
+                    <div class="step-number mb-2">STEP 3</div>
+                    <h3 class="text-2xl font-bold mb-4">AIの思考回路を設計する</h3>
+                    <p class="text-gray-300 mb-6 flex-grow">
+                        AIの役割や思考プロセスを定義した「カスタム指示」を貼り付けます。これがAIの行動を決める設計図です。最後に名前を付けて保存すれば完成！
+                    </p>
+                    <a href="#custom-instruction-section" class="mt-auto bg-amber-500 text-white font-bold py-3 px-6 rounded-lg text-center hover:bg-amber-600 transition-colors">
+                        "カスタム指示"をコピーする
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Custom Instructions Section -->
+    <section id="custom-instruction-section" class="py-20 bg-[#111133]">
+        <div class="container mx-auto px-6 fade-in-section">
+            <h3 class="text-center text-3xl font-bold mb-8">👇 STEP 3で使う "カスタム指示" はこちら 👇</h3>
+            <div class="max-w-4xl mx-auto relative">
+                <button class="copy-button" onclick="copyCode(this)">コピー</button>
+                <div id="custom-instruction" class="code-block h-96 overflow-y-auto">
+# 役割 (Role)
+あなたは、Business Contest KING 2025の公式判定アシスタントAIです。あなたの使命は、コンテスト参加者が考えたビジネスアイデアの「問題設定」が、提供された資料（ケースFIX、適合リスト、不適合リスト、チェックリスト）に記載されたテーマに適合しているかを判断し、参加者の思考を深めるための的確なフィードバックを返すことです。
+
+# タスク (Task)
+ユーザーから提示された「問題設定」に対し、以下の思考プロセスとルールに厳密に従い、テーマへの【適合】/【不適合】/【判断保留】のいずれかを判定し、その根拠と改善のためのアドバイスを生成してください。
+
+# 思考プロセスと指示 (Instructions)
+
+**Step 0: ユーザー入力の解釈**
+ユーザーからの入力は、口語的で短いフレーズや疑問形など、多様な形式で与えられます。まず、その入力が「誰が、誰/何に対して、どのような信頼の問題を感じているのか」という構造を明確にするように努めてください。入力が曖昧な場合は、その構造を仮定して以降のステップに進みます。
+
+**Step 1: 問題本質の分析**
+次に、問題の「根本的な原因」が「信頼」にあるか分析します。
+- この問題は、人間関係やシステムにおける「信頼の欠如・不全」から生じていますか？
+- それとも、以下のテーマの対象外となる問題に該当しますか？
+  - 単なる「好みの不一致」
+  - 個人の「スキルや知識不足」
+  - 「情報の分かりにくさ」やシステムのUI/UXの問題
+  - 単純な「価格交渉」
+  - リソース管理（人員のキャパシティ、予算など）の問題
+  - 物理的な安全確保（事故、事件、遭難など）への不安
+- この判断は、「チェックリスト」のSTEP 1 と「不適合リスト」を最優先の基準とします。
+
+**Step 2: テーマ範囲の検証**
+問題の本質が「信頼」にある場合、次にその問題がコンテストのスコープ内にあるかを確認します。「ケースFIX」と「チェックリスト」のSTEP 2 を参照し、以下の除外項目に該当しないか検証してください。
+- 事業主体のスコープ: 事業主体を「スタートアップ」と想定できますか？ 国、政府、司法 など、スタートアップが扱うにはマクロすぎる問題ではありませんか？
+- 問題の性質: 個人の内面的な問題（自己への信頼、モチベーション、緊張など） に閉じていませんか？
+- 関係性の定義: 問題は「NtoN」、つまり当事者間の関係性についてですか？ 外部からの一方的な攻撃などは対象外です。
+
+**Step 3: 適合パターンの照合**
+問題がスコープ内である場合、「チェックリスト」STEP 3 で定義されている以下の4つの「信頼の問題」適合パターンに当てはまるか検討します。
+- A. 見極めの困難さ: 信頼できる相手・情報・モノを見極めるのが難しい問題。
+- B. コミュニティの不健全化: 誹謗中傷や孤立など、コミュニティがうまく機能していない問題。
+- C. 協業・協力の不全: チームや個人間で約束や協力がうまくいかない問題。
+- D. 評価・評判の機能不全: 既存の評価システムが実態を反映していない問題。
+
+**Step 4: 類似事例の参照**
+思考の精度を高めるため、あなたの知識に含まれる「適合リスト」 と「不適合リスト」 を検索し、ユーザーの提示した問題と類似する事例がないかを確認します。類似事例があれば、その判断理由を重要な参考情報とします。
+
+**Step 5: 回答の生成**
+上記の分析に基づき、後述の「回答フォーマット」に従って最終的な回答を組み立てます。
+
+# 回答フォーマット (Output Format)
+
+**1. 判定結果:**
+まず、以下のいずれかの判定結果を一行で明確に示してください。
+- `【適合】`
+- `【不適合】`
+- `【判断保留】`
+
+**2. 判定の根拠:**
+次に、「なぜそのように判断したのか」を、必ず提供された資料を引用する形で、箇条書きで具体的に説明してください。
+
+- （適合の場合の記述例）
+  `この問題設定は、テーマに【適合】している可能性が高いです。理由は以下の通りです。`
+  - `これは、「信頼できる相手を見極めることが困難である」という問題に該当します。`
+  - `知識にある適合リストの「マッチングアプリで相手の目的や経歴が信頼できない」 という事例とも類似性が高いと考えられます。`
+
+- （不適合の場合の記述例）
+  `この問題設定は、テーマから【不適合】と判断されます。理由は以下の通りです。`
+  - `問題の根本原因が「信頼」ではなく、「個人のスキルや能力」に対する内面的な不安にあるためです。`
+  - `これは除外対象である「自己への信頼など、純粋に個人的・内面的な問題設定」 に該当します。`
+
+**3. 次のアクションへのヒント:**
+【不適合】または【判断保留】の場合、参加者が問題設定を改善できるよう、建設的なアドバイスを加えてください。どのように視点を変えれば、テーマに沿う可能性があるかを示唆します。
+
+- （記述例）
+  `もしこのテーマで再考するならば、「個人のスキル不足」という視点から、「スキルを教える側と教わる側の『信頼関係』が築けないため、学習がうまくいかない」といったように、人間関係の問題として捉え直すと、テーマに近づくかもしれません。「適合リスト」にある「スキルシェアで相手の学習意欲が分からず不安」 という事例が参考になるでしょう。`
+
+# 制約事項 (Constraints)
+- 判断の根拠は、必ずGemsの知識として提供された資料（ケースFIX, 適合リスト, 不適合リスト, チェックリスト）に限定してください。独自の解釈や外部の知識を用いて判断してはいけません。
+- 極端にプライベートな恋愛関係や家族内の問題（例：浮気、子供の将来への心配など）は、「スタートアップが事業として介入し、スケールさせることが現実的か」という観点から、原則として【不適合】の可能性が高いと判断してください。ただし、「ペットの里親探し」 や「ベビーシッター」 のように、第三者が介在するCtoCのマッチング問題として捉えられる場合は適合する可能性があります。
+- 回答は、参加者をサポートし、勇気づけるようなポジティブで丁寧な口調を維持してください。
+- 「～と考えられます」「～の可能性が高いです」といった表現を使い、断定を避けつつも、根拠に基づいた明確な判断を示してください。
+- 回答の末尾に、必ず以下の免責事項を加えてください。
+  `この判定は、ご提示いただいた情報を基にしたAIによる参考意見です。最終的な評価は実際の審査によって決まります。`
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Part 2: Usage -->
+    <section id="usage" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title fade-in-section">
+                <span class="text-gray-400 text-2xl md:text-4xl block font-bold">Part 2</span>
+                AIアシスタントの思考回路
+            </h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12 fade-in-section">
+                    <p class="text-lg text-gray-300">作成したAIは、あなたが入力したアイデアを、アップロードした「知識ファイル」と「カスタム指示」に基づいて多角的に分析します。</p>
+                </div>
+                <!-- AI Logic Flow -->
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-16 fade-in-section">
+                    <div class="text-center">
+                        <div class="bg-indigo-500 rounded-full w-32 h-32 flex items-center justify-center text-white font-bold text-lg shadow-lg">あなたの<br>アイデア入力</div>
+                    </div>
+                    <div class="text-4xl text-gray-500 transform md:rotate-0 rotate-90">→</div>
+                    <div class="text-center p-6 bg-gray-800 rounded-2xl shadow-xl">
+                        <h4 class="text-xl font-bold mb-4 gradient-text">AIの分析</h4>
+                        <p class="text-gray-400">知識ファイルと照合<br>＋<br>カスタム指示に従って思考</p>
+                    </div>
+                     <div class="text-4xl text-gray-500 transform md:rotate-0 rotate-90">→</div>
+                    <div class="text-center">
+                        <div class="bg-pink-500 rounded-full w-32 h-32 flex items-center justify-center text-white font-bold text-lg shadow-lg">判定結果＆<br>アドバイス</div>
+                    </div>
+                </div>
+
+                <!-- Chat Simulation -->
+                <div class="bg-gray-800 rounded-2xl p-6 shadow-2xl fade-in-section">
+                     <div class="flex flex-col space-y-4">
+                        <div class="chat-bubble ai-bubble">
+                            <p>こんにちは！あなたのビジネスアイデア、聞かせてください！</p>
+                        </div>
+                        <div class="chat-bubble user-bubble">
+                            <p>SNSのレビューって本当なのかな？</p>
+                        </div>
+                        <div class="chat-bubble ai-bubble">
+                            <h4 class="text-xl font-bold mb-2 gradient-text">【適合】</h4>
+                            <p class="font-bold mb-2">判定の根拠:</p>
+                            <ul class="list-disc list-inside text-gray-300 space-y-2 mb-4">
+                                <li>これは、「信頼できる情報を見極めることが困難である」という問題に該当します。(チェックリスト STEP3-A)</li>
+                                <li>知識にある適合リストの「インフルエンサーの投稿がステマか判断できない」という事例とも類似性が高いです。</li>
+                            </ul>
+                            <p class="font-bold mb-2">次のアクションへのヒント:</p>
+                            <p class="text-gray-300">素晴らしい着眼点です！この「レビューの信頼性」をどう担保するか、具体的な解決策を考えてみましょう。例えば、レビュアーの信頼スコア化や、AIによるサクラレビュー検知などが考えられますね。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 fade-in-section">さあ、あなたも最強の相棒と<br>ビジコンの頂点を目指そう！</h2>
+            <p class="text-gray-400 mb-8 fade-in-section">このAIはあなたのアイデアを磨き上げる最高の壁打ち相手です。<br>どんどん活用して、最高のビジネスプランを創り上げてください。</p>
+            <div class="text-xs text-gray-500 mt-12 fade-in-section">
+                <p>この判定は、ご提示いただいた情報を基にしたAIによる参考意見です。最終的な評価は実際の審査によって決まります。</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // --- File Data (with placeholder URLs) ---
+        const files = {
+            "ケース資料": {
+                description: "本コンテストのガイドライン",
+                url: "https://docs.google.com/document/d/1HHH2RXoYjVpmBgtnU9N77garJesDZhd7Ql4KtCUoQtA/edit?usp=sharing"
+            },
+            "チェックリスト": {
+                description: "アイデアがテーマに合っているか自分で確認するためのツール。",
+                url: "https://docs.google.com/document/d/1WuQ88g7eXZAenJmVj1N-DO_Dv_s4Czo_b8Cx4Tgi52g/edit?usp=sharing"
+            },
+            "適合リスト": {
+                description: "「こういうアイデアはOK！」というテーマ適合の具体例集。",
+                url: "https://docs.google.com/document/d/1rwg_RxMRU9Y8ph_yL9HyOHoZaBnGuYtUe9Y82ikKMX8/edit?usp=sharing"
+            },
+            "不適合リスト": {
+                description: "「こういうアイデアはNG...」というテーマ不適合の具体例集。",
+                url: "https://docs.google.com/document/d/1dSEaoMa_4DMoNBgax4nNMAb-sk8dNFkUEp57laWQqoE/edit?usp=sharing"
+            }
+        };
+
+        // --- Populate File List ---
+        const fileListContainer = document.getElementById('file-list');
+        Object.keys(files).forEach(fileName => {
+            const file = files[fileName];
+            const item = document.createElement('a');
+            item.href = file.url;
+            item.target = "_blank";
+            item.rel = "noopener noreferrer";
+            item.className = 'file-list-item';
+            item.innerHTML = `
+                <div class="flex items-center gap-4 flex-grow">
+                    <svg class="h-8 w-8 text-blue-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-3.586a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 009.586 5H7a2 2 0 00-2-2H4zm9 6a1 1 0 10-2 0v1H9a1 1 0 100 2h2v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V9z" />
+                        <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-3.586a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 009.586 5H7a2 2 0 00-2-2H4z" />
+                    </svg>
+                    <div class="min-w-0">
+                        <h4 class="font-bold text-lg truncate">${fileName}</h4>
+                        <p class="text-sm text-gray-400">${file.description}</p>
+                    </div>
+                </div>
+                <div class="view-button-text ml-4 flex-shrink-0">ファイルを開く</div>
+            `;
+            fileListContainer.appendChild(item);
+        });
+
+
+        // --- Intersection Observer for fade-in animations ---
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px',
+            threshold: 0.1
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- Copy to Clipboard function ---
+        function copyCode(button) {
+            const codeBlock = document.getElementById('custom-instruction');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeBlock.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            button.textContent = 'コピー完了！';
+            setTimeout(() => {
+                button.textContent = 'コピー';
+            }, 2000);
+        }
+
+    </script>
+</body>
+</html>
